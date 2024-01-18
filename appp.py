@@ -8,7 +8,7 @@ import gradio as gr
 llm = ChatGoogleGenerativeAI(model="gemini-pro",
                              verbose=True,
                              temperature=0.5,
-                             google_api_key="")
+                             google_api_key="AIzaSyAigxyjEjhVVfIbbbawgGPphVQIZR7BkUM")
 
 duckduckgo_search = DuckDuckGoSearchRun()
 
@@ -17,7 +17,7 @@ def create_crewai_setup(age, gender, disease):
     fitness_expert = Agent(
         role="Fitness Expert",
         goal=f"""Analyze the fitness requirements for a {age}-year-old {gender} with {disease} and 
-                 suggest exercise routines and fitness strategies""",
+                 suggest exercise routines and fitness strategies. All the output must be written in Brazilian Portuguese language.""",
         backstory=f"""Expert at understanding fitness needs, age-specific requirements, 
                       and gender-specific considerations. Skilled in developing 
                       customized exercise routines and fitness strategies.""",
@@ -30,7 +30,7 @@ def create_crewai_setup(age, gender, disease):
     nutritionist = Agent(
         role="Nutritionist",
         goal=f"""Assess nutritional requirements for a {age}-year-old {gender} with {disease} and 
-                 provide dietary recommendations""",
+                 provide dietary recommendations. All the output must be written in Brazilian Portuguese language.""",
         backstory=f"""Knowledgeable in nutrition for different age groups and genders, 
                       especially for individuals of {age} years old. Provides tailored 
                       dietary advice based on specific nutritional needs.""",
@@ -43,7 +43,7 @@ def create_crewai_setup(age, gender, disease):
         role="Doctor",
         goal=f"""Evaluate the overall health considerations for a {age}-year-old {gender} with {disease} and 
                  provide recommendations for a healthy lifestyle.Pass it on to the
-                  disease_expert if you are not an expert of {disease} """,
+                  disease_expert if you are not an expert of {disease}. All the output must be written in Brazilian Portuguese language.""",
         backstory=f"""Medical professional experienced in assessing overall health and 
                       well-being. Offers recommendations for a healthy lifestyle 
                       considering age, gender, and disease factors.""",
@@ -56,7 +56,7 @@ def create_crewai_setup(age, gender, disease):
     if disease.lower() == "yes":
         disease_expert = Agent(
             role="Disease Expert",
-            goal=f"""Provide recommendations for managing {disease}""",
+            goal=f"""Provide recommendations for managing {disease}. All the output must be written in Brazilian Portuguese language.""",
             backstory=f"""Specialized in dealing with individuals having {disease}. 
                           Offers tailored advice for managing the specific health condition.
                           Do not prescribe medicines but only give advice.""",
@@ -79,7 +79,7 @@ def create_crewai_setup(age, gender, disease):
         # Define Tasks without Disease Expert
         task1 = Task(
             description=f"""Analyze the fitness requirements for a {age}-year-old {gender}. 
-                            Provide recommendations for exercise routines and fitness strategies.""",
+                            Provide recommendations for exercise routines and fitness strategies. All the output must be written in Brazilian Portuguese language.""",
             agent=fitness_expert,
             llm=llm
         )
@@ -87,14 +87,14 @@ def create_crewai_setup(age, gender, disease):
         task2 = Task(
             description=f"""Assess nutritional requirements for a {age}-year-old {gender}. 
                         Provide dietary recommendations based on specific nutritional needs.
-                        Do not prescribe a medicine""",
+                        Do not prescribe a medicine. All the output must be written in Brazilian Portuguese language.""",
             agent=nutritionist,
             llm=llm
         )
 
         task3 = Task(
             description=f"""Evaluate overall health considerations for a {age}-year-old {gender}. 
-                        Provide recommendations for a healthy lifestyle.""",
+                        Provide recommendations for a healthy lifestyle. All the output must be written in Brazilian Portuguese language.""",
             agent=doctor,
             llm=llm
         )
@@ -124,7 +124,7 @@ iface = gr.Interface(
     fn=run_crewai_app, 
     inputs=["text", "text", "text"], 
     outputs="text",
-    title="CrewAI Health,Nutriion and Fitness Analysis",
+    title="CrewAI Health,Nutrition and Fitness Analysis",
     description="Enter age, gender, and disease (or 'no' if there is no disease) to analyze fitness, nutrition, and health strategies."
 )
 
